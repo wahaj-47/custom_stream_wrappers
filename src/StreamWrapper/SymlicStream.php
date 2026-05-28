@@ -44,7 +44,7 @@ class SymlicStream extends SymlinkStream
     }
 
     /**
-     * Finds and returns the base URL for legacy://.
+     * Finds and returns the base URL for symlic://.
      */
     public static function baseUrl()
     {
@@ -52,7 +52,7 @@ class SymlicStream extends SymlinkStream
     }
 
     /**
-     *  Returns the base path for legacy://.
+     *  Returns the base path for symlic://.
      */
     public static function basePath()
     {
