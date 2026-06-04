@@ -54,7 +54,7 @@ class SymlegStream extends SymlinkStream
     /**
      *  Returns the base path for legacy://.
      */
-    public static function basePath()
+    public static function basePath($site_path = NULL)
     {
         return 'sites/all/files';
     }

@@ -50,12 +50,4 @@ class SymlicStream extends SymlinkStream
     {
         return $GLOBALS['base_url'] . '/' . static::basePath();
     }
-
-    /**
-     *  Returns the base path for symlic://.
-     */
-    public static function basePath()
-    {
-        return 'sites/default/files';
-    }
 }

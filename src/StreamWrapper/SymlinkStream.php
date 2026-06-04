@@ -3,12 +3,13 @@
 namespace Drupal\custom_stream_wrapper\StreamWrapper;
 
 use Drupal\Core\StreamWrapper\LocalReadOnlyStream;
+use Drupal\Core\StreamWrapper\PublicStream;
 use Drupal\Core\StreamWrapper\StreamWrapperInterface;
 
 /**
  * Abstract stream wrapper class for symlinked files. 
  */
-abstract class SymlinkStream extends LocalReadOnlyStream
+abstract class SymlinkStream extends PublicStream
 {
     /**
      * {@inheritdoc}
@@ -18,7 +19,18 @@ abstract class SymlinkStream extends LocalReadOnlyStream
         if (!isset($uri)) {
             $uri = $this->uri;
         }
-        $path = $this->getDirectoryPath() . '/' . $this->getTarget($uri);
+
+        $target = $this->getTarget($uri);
+
+        // Reject path traversal attempts at the URI level, before any filesystem
+        // resolution. Normalise separators first to catch both Unix and Windows
+        // variants (e.g. "..\"). realpath() cannot be used for this because it
+        // resolves symlinks to a path outside $directory by design.
+        if (str_contains(str_replace('\\', '/', $target), '..')) {
+            return FALSE;
+        }
+
+        $path = $this->getDirectoryPath() . '/' . $target;
 
 
         // In PHPUnit tests, the base path for local streams may be a virtual
